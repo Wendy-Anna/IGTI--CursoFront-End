@@ -31,6 +31,11 @@ function activateInput() {
   }
 
   function handleTyping(event) {
+    var hasText = !!event.target.value && event.target.value.trim() !== '';
+    if (!hasText) {
+      clearInput();
+      return;
+    }
     if (event.key === 'Enter') {
       if (isEditing) {
         updateName(event.target.value);
