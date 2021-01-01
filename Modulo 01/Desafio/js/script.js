@@ -2,6 +2,7 @@ window.addEventListener('load', start);
 
 var globalNames = ['Sérgio', 'Cleano', 'Paulo', 'Luender'];
 var inputName = null;
+var isEditing = false;
 
 function start() {
   inputName = document.querySelector('#inputName');
@@ -27,7 +28,11 @@ function activateInput() {
 
   function handleTyping(event) {
     if (event.key === 'Enter') {
-      insertName(event.target.value);
+      if (isEditing) {
+      } else {
+        insertName(event.target.value);
+      }
+      isEditing = false;
     }
   }
   inputName.addEventListener('keyup', handleTyping);
@@ -50,7 +55,9 @@ function render() {
 
   function createSpan(name) {
     function editItem() {
-      inputName.value = 'name';
+      inputName.value = name;
+      inputName.focus();
+      isEditing = true;
     }
 
     var span = document.createElement('span');
