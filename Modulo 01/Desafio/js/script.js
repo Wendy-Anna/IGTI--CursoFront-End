@@ -3,6 +3,7 @@ window.addEventListener('load', start);
 var globalNames = ['Sérgio', 'Cleano', 'Paulo', 'Luender'];
 var inputName = null;
 var isEditing = false;
+var currentIndex = null;
 
 function start() {
   inputName = document.querySelector('#inputName');
@@ -23,16 +24,23 @@ function preventFormSubmit() {
 function activateInput() {
   function insertName(newName) {
     globalNames.push(newName);
-    render();
+  }
+
+  function updateName(newName) {
+    globalNames[currentIndex] = newName;
   }
 
   function handleTyping(event) {
     if (event.key === 'Enter') {
       if (isEditing) {
+        updateName(event.target.value);
       } else {
         insertName(event.target.value);
       }
+
+      render();
       isEditing = false;
+      clearInput();
     }
   }
   inputName.addEventListener('keyup', handleTyping);
@@ -53,11 +61,12 @@ function render() {
     return button;
   }
 
-  function createSpan(name) {
+  function createSpan(name, index) {
     function editItem() {
       inputName.value = name;
       inputName.focus();
       isEditing = true;
+      currentIndex = index;
     }
 
     var span = document.createElement('span');
@@ -80,7 +89,7 @@ function render() {
 
     var li = document.createElement('li');
     var button = createDeleteButton(i);
-    var span = createSpan(currentName);
+    var span = createSpan(currentName, i);
 
     li.appendChild(button);
     li.appendChild(span);
