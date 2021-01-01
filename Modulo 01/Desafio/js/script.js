@@ -1,6 +1,6 @@
 window.addEventListener('load', start);
 
-var globalNames = ['Sérgio', 'Cleano', 'Paulo', 'Luender', 'Walms'];
+var globalNames = ['Sérgio', 'Cleano', 'Paulo', 'Luender'];
 var inputName = null;
 
 function start() {
@@ -22,6 +22,7 @@ function preventFormSubmit() {
 function activateInput() {
   function insertName(newName) {
     globalNames.push(newName);
+    render();
   }
 
   function handleTyping(event) {
@@ -34,7 +35,22 @@ function activateInput() {
 }
 
 function render() {
+  function createDeleteButton(index) {
+    function deleteName() {
+      globalNames.splice(index, 1);
+      render();
+    }
+    var button = document.createElement('button');
+    button.classList.add('deleteButton');
+    button.textContent = 'x';
+
+    button.addEventListener('click', deleteName);
+
+    return button;
+  }
+
   var divNames = document.querySelector('#names');
+  divNames.innerHTML = '';
 
   //criar ul
   // Fazer n li's, conforme tamanho de globalNames
@@ -44,8 +60,20 @@ function render() {
     var currentName = globalNames[i];
 
     var li = document.createElement('li');
-    li.textContent = currentName;
+    var button = createDeleteButton(i);
+
+    var span = document.createElement('span');
+    span.textContent = currentName;
+
+    li.appendChild(button);
+    li.appendChild(span);
     ul.appendChild(li);
   }
   divNames.appendChild(ul);
+  clearInput();
+}
+
+function clearInput() {
+  inputName.value = '';
+  inputName.focus();
 }
