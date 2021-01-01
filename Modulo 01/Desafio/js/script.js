@@ -43,10 +43,22 @@ function render() {
     var button = document.createElement('button');
     button.classList.add('deleteButton');
     button.textContent = 'x';
-
     button.addEventListener('click', deleteName);
 
     return button;
+  }
+
+  function createSpan(name) {
+    function editItem() {
+      inputName.value = 'name';
+    }
+
+    var span = document.createElement('span');
+    span.classList.add('clickable');
+    span.textContent = name;
+    span.addEventListener('click', editItem);
+
+    return span;
   }
 
   var divNames = document.querySelector('#names');
@@ -61,9 +73,7 @@ function render() {
 
     var li = document.createElement('li');
     var button = createDeleteButton(i);
-
-    var span = document.createElement('span');
-    span.textContent = currentName;
+    var span = createSpan(currentName);
 
     li.appendChild(button);
     li.appendChild(span);
